@@ -1,0 +1,19 @@
+## Build outputs
+bin/
+obj/
+
+## User secrets / local config
+appsettings.Development.json
+**/secrets.json
+
+## IDE
+.vs/
+*.user
+*.suo
+
+## OS
+Thumbs.db
+.DS_Store
+
+## EF
+# Migrations are checked in — do not ignore Migrations/

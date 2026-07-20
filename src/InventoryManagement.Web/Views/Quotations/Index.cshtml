@@ -1,0 +1,35 @@
+@model IEnumerable<InventoryManagement.Application.DTOs.QuotationListItemDto>
+@{
+    ViewData["Title"] = "Quotations";
+}
+<div class="d-flex justify-content-between align-items-center mb-3">
+    <h1>Quotations</h1>
+    <a asp-action="Create" class="btn btn-primary">New Quotation</a>
+</div>
+<div class="table-responsive">
+    <table class="table table-striped table-hover">
+        <thead>
+            <tr>
+                <th>Number</th>
+                <th>Customer</th>
+                <th>Date</th>
+                <th class="text-end">Total</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@item.QuotationNumber</td>
+                <td>@item.CustomerName</td>
+                <td>@item.QuotationDate.ToString("dd MMM yyyy")</td>
+                <td class="text-end">@item.TotalAmount.ToString("0.00")</td>
+                <td class="text-end">
+                    <a asp-action="Details" asp-route-id="@item.Id">View</a>
+                </td>
+            </tr>
+        }
+        </tbody>
+    </table>
+</div>

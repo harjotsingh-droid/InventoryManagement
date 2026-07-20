@@ -1,0 +1,43 @@
+@model InventoryManagement.Web.Models.ProductFormViewModel
+@{
+    ViewData["Title"] = "Edit Product";
+}
+<h1>Edit Product</h1>
+<form asp-action="Edit" method="post" class="col-md-6">
+    <input type="hidden" asp-for="Id" />
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+    <div class="mb-3">
+        <label asp-for="Name" class="form-label"></label>
+        <input asp-for="Name" class="form-control" />
+        <span asp-validation-for="Name" class="text-danger"></span>
+    </div>
+    <div class="mb-3">
+        <label asp-for="Sku" class="form-label"></label>
+        <input asp-for="Sku" class="form-control" />
+        <span asp-validation-for="Sku" class="text-danger"></span>
+    </div>
+    <div class="mb-3">
+        <label asp-for="Barcode" class="form-label"></label>
+        <input asp-for="Barcode" class="form-control" />
+    </div>
+    <div class="mb-3">
+        <label asp-for="SellingPrice" class="form-label"></label>
+        <input asp-for="SellingPrice" class="form-control" />
+        <span asp-validation-for="SellingPrice" class="text-danger"></span>
+    </div>
+    <div class="mb-3">
+        <label asp-for="GstPercent" class="form-label"></label>
+        <input asp-for="GstPercent" class="form-control" />
+        <span asp-validation-for="GstPercent" class="text-danger"></span>
+    </div>
+    <div class="mb-3">
+        <label asp-for="CurrentStock" class="form-label"></label>
+        <input asp-for="CurrentStock" class="form-control" />
+        <span asp-validation-for="CurrentStock" class="text-danger"></span>
+    </div>
+    <button type="submit" class="btn btn-primary">Save</button>
+    <a asp-action="Index" class="btn btn-link">Cancel</a>
+</form>
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

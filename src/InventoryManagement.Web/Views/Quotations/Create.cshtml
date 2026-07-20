@@ -1,0 +1,122 @@
+@model InventoryManagement.Web.Models.QuotationFormViewModel
+@{
+    ViewData["Title"] = "New Quotation";
+}
+<h1>New Quotation</h1>
+<form asp-action="Create" method="post" id="quotationForm">
+    <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
+    <div class="row g-3 mb-4">
+        <div class="col-md-4">
+            <label asp-for="CustomerId" class="form-label">Customer</label>
+            <select asp-for="CustomerId" asp-items="ViewBag.Customers" class="form-select">
+                <option value="">-- Select customer --</option>
+            </select>
+            <span asp-validation-for="CustomerId" class="text-danger"></span>
+        </div>
+        <div class="col-md-3">
+            <label asp-for="QuotationDate" class="form-label"></label>
+            <input asp-for="QuotationDate" class="form-control" type="date" />
+            <span asp-validation-for="QuotationDate" class="text-danger"></span>
+        </div>
+        <div class="col-md-3">
+            <label asp-for="ValidUntil" class="form-label"></label>
+            <input asp-for="ValidUntil" class="form-control" type="date" />
+            <span asp-validation-for="ValidUntil" class="text-danger"></span>
+        </div>
+        <div class="col-md-2">
+            <label asp-for="DiscountAmount" class="form-label">Quote Discount</label>
+            <input asp-for="DiscountAmount" class="form-control" />
+        </div>
+    </div>
+
+    <h4>Line Items</h4>
+    <div id="lineItems">
+        @for (var i = 0; i < Model.Lines.Count; i++)
+        {
+            <div class="row g-2 line-item mb-2 align-items-end">
+                <div class="col-md-4">
+                    <label class="form-label">Product</label>
+                    <select asp-for="Lines[i].ProductId" asp-items="ViewBag.Products" class="form-select product-select">
+                        <option value="">-- Select product --</option>
+                    </select>
+                </div>
+                <div class="col-md-2">
+                    <label class="form-label">Qty</label>
+                    <input asp-for="Lines[i].Quantity" class="form-control" />
+                </div>
+                <div class="col-md-2">
+                    <label class="form-label">Unit Price</label>
+                    <input asp-for="Lines[i].UnitPrice" class="form-control unit-price" />
+                </div>
+                <div class="col-md-1">
+                    <label class="form-label">Disc %</label>
+                    <input asp-for="Lines[i].DiscountPercent" class="form-control" />
+                </div>
+                <div class="col-md-1">
+                    <label class="form-label">GST %</label>
+                    <input asp-for="Lines[i].GstPercent" class="form-control gst-percent" />
+                </div>
+                <div class="col-md-2">
+                    <button type="button" class="btn btn-outline-danger remove-line w-100">Remove</button>
+                </div>
+            </div>
+        }
+    </div>
+    <button type="button" id="addLine" class="btn btn-outline-secondary mb-3">Add Line</button>
+
+    <div class="mb-3">
+        <label asp-for="Notes" class="form-label"></label>
+        <textarea asp-for="Notes" class="form-control" rows="2"></textarea>
+    </div>
+
+    <button type="submit" class="btn btn-primary">Create Quotation</button>
+    <a asp-action="Index" class="btn btn-link">Cancel</a>
+</form>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+    <script>
+        (function () {
+            let lineIndex = @Model.Lines.Count;
+
+            document.getElementById('addLine').addEventListener('click', function () {
+                const container = document.getElementById('lineItems');
+                const template = container.querySelector('.line-item').cloneNode(true);
+                template.querySelectorAll('input, select').forEach(function (el) {
+                    const name = el.getAttribute('name');
+                    if (name) {
+                        el.setAttribute('name', name.replace(/\[\d+\]/, '[' + lineIndex + ']'));
+                        el.setAttribute('id', el.getAttribute('id')?.replace(/_\d+__/, '_' + lineIndex + '__'));
+                        if (el.tagName === 'SELECT') el.selectedIndex = 0;
+                        else if (el.classList.contains('unit-price') || el.classList.contains('gst-percent')) el.value = '0';
+                        else if (el.name.endsWith('.Quantity')) el.value = '1';
+                        else el.value = '0';
+                    }
+                });
+                container.appendChild(template);
+                lineIndex++;
+            });
+
+            document.getElementById('lineItems').addEventListener('click', function (e) {
+                if (e.target.classList.contains('remove-line')) {
+                    const items = document.querySelectorAll('.line-item');
+                    if (items.length > 1) e.target.closest('.line-item').remove();
+                }
+            });
+
+            document.getElementById('lineItems').addEventListener('change', function (e) {
+                if (e.target.classList.contains('product-select')) {
+                    const productId = e.target.value;
+                    if (!productId) return;
+                    const row = e.target.closest('.line-item');
+                    fetch('/Quotations/ProductDefaults?productId=' + productId)
+                        .then(r => r.json())
+                        .then(data => {
+                            row.querySelector('.unit-price').value = data.unitPrice;
+                            row.querySelector('.gst-percent').value = data.gstPercent;
+                        });
+                }
+            });
+        })();
+    </script>
+}

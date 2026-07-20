@@ -1,0 +1,62 @@
+@model InventoryManagement.Web.Models.SearchViewModel
+@{
+    ViewData["Title"] = "Search";
+    var results = ViewBag.Results as InventoryManagement.Application.DTOs.GlobalSearchResultDto;
+}
+<h1>Global Search</h1>
+<form method="get" class="row g-2 mb-4">
+    <div class="col-md-8">
+        <input type="text" name="q" value="@Model.Query" class="form-control" placeholder="Search products, customers, quotations (min 2 characters)" />
+    </div>
+    <div class="col-auto">
+        <button type="submit" class="btn btn-primary">Search</button>
+    </div>
+</form>
+@if (ViewBag.Error != null)
+{
+    <div class="alert alert-warning">@ViewBag.Error</div>
+}
+@if (results != null)
+{
+    <div class="row">
+        <div class="col-md-4">
+            <h5>Products</h5>
+            <ul class="list-group mb-3">
+                @if (results.Products.Count == 0) { <li class="list-group-item text-muted">No matches</li> }
+                @foreach (var item in results.Products)
+                {
+                    <li class="list-group-item">
+                        <a href="@item.Url">@item.Title</a>
+                        <div class="small text-muted">@item.Subtitle</div>
+                    </li>
+                }
+            </ul>
+        </div>
+        <div class="col-md-4">
+            <h5>Customers</h5>
+            <ul class="list-group mb-3">
+                @if (results.Customers.Count == 0) { <li class="list-group-item text-muted">No matches</li> }
+                @foreach (var item in results.Customers)
+                {
+                    <li class="list-group-item">
+                        <a href="@item.Url">@item.Title</a>
+                        <div class="small text-muted">@item.Subtitle</div>
+                    </li>
+                }
+            </ul>
+        </div>
+        <div class="col-md-4">
+            <h5>Quotations</h5>
+            <ul class="list-group mb-3">
+                @if (results.Quotations.Count == 0) { <li class="list-group-item text-muted">No matches</li> }
+                @foreach (var item in results.Quotations)
+                {
+                    <li class="list-group-item">
+                        <a href="@item.Url">@item.Title</a>
+                        <div class="small text-muted">@item.Subtitle</div>
+                    </li>
+                }
+            </ul>
+        </div>
+    </div>
+}
