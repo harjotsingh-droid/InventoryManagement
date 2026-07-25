@@ -3,7 +3,7 @@
 This file records the primary AI prompts used to build the SME ERP Inventory Management project.
 
 > **Phase-specific prompts** are also available in `ai-prompts/`:
-> `planning.md`, `design.md`, `implementation.md`, `testing.md`, `debugging.md`, `review.md`
+> `planning.md`, `design.md`, `implementation.md`, `testing.md`, `debugging.md`, `code-review.md`, `documentation.md`
 
 ## Session 1 — Project bootstrap
 

@@ -34,6 +34,10 @@ dotnet ef database update --project src/InventoryManagement.Infrastructure --sta
 
 Migrations are stored in `src/InventoryManagement.Infrastructure/Migrations/`.
 
+See also:
+- `database/schema-or-migrations/README.md` — schema tables and migration commands
+- `database/seed-data/README.md` — demo seed data reference
+
 ## Seed data
 
 On first startup, `DbSeeder` applies migrations and seeds:

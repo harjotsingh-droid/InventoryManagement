@@ -3,7 +3,7 @@
 ## Phase 1 — Planning and scaffolding (Day 1)
 
 1. Read Option 3 specification and define trimmed core scope.
-2. Document requirements in `requirement-analysis.md` and acceptance criteria.
+2. Document requirements in `requirements-analysis.md` and acceptance criteria.
 3. Choose Clean Architecture layering: Domain → Application → Infrastructure → Web.
 4. Create solution and project structure under `src/` and `tests/`.
 

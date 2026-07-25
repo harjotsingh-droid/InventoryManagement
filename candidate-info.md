@@ -19,9 +19,13 @@ A trimmed-core inventory and quotation management ERP for small trading/distribu
 InventoryManagement/
 ├── src/                          # Application source (Domain, Application, Infrastructure, Web)
 ├── tests/                        # xUnit tests
-├── database/                     # Database setup notes
-├── ai-prompts/                   # Phase-specific AI prompt history
-├── requirement-analysis.md
+├── database/                     # Database setup, schema, seed data
+│   ├── schema-or-migrations/
+│   └── seed-data/
+├── ai-prompts/                   # Phase-specific AI prompt history (7 files)
+├── tool-specific/
+│   └── cursor-workflow/          # Cursor IDE workflow artifacts
+├── requirements-analysis.md
 ├── acceptance-criteria.md
 ├── implementation-plan.md
 ├── api-contract.md

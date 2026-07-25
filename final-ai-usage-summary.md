@@ -25,7 +25,8 @@ Detailed prompts are in `ai-prompts/`:
 - `implementation.md` — Code generation prompts
 - `testing.md` — Test creation prompts
 - `debugging.md` — Troubleshooting prompts
-- `review.md` — Code review and documentation prompts
+- `code-review.md` — Code review prompts
+- `documentation.md` — Documentation prompts
 
 ## Code ownership statement
 

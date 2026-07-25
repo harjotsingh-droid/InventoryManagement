@@ -58,7 +58,7 @@ Assessment deliverable for Option 3 (SME ERP — Inventory Management). Focuses 
 
 | File | Purpose |
 |------|---------|
-| `requirement-analysis.md` | Scope mapping |
+| `requirements-analysis.md` | Scope mapping |
 | `acceptance-criteria.md` | Testable criteria |
 | `implementation-plan.md` | Build phases |
 | `data-model.md` | Entity design |

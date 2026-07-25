@@ -10,7 +10,7 @@
 **Outcome:**
 - Scoped trimmed core: login, products, customers, quotations, settings, search, dashboard
 - Deferred stretch: POS, purchases, HR, Chart.js, Docker/CI
-- Documented in `requirement-analysis.md`
+- Documented in `requirements-analysis.md`
 
 ## Prompt 2 — Acceptance criteria
 

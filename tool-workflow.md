@@ -62,6 +62,9 @@ dotnet user-secrets set "ConnectionStrings:DefaultConnection" "Server=(localdb)\
 | `src/InventoryManagement.Web/` | Controllers, views, ViewComponents |
 | `tests/` | xUnit test projects mirror Application layer |
 | Root `*.md` | Lifecycle and assessment artifacts |
+| `tool-specific/cursor-workflow/` | Cursor IDE workflow and usage artifacts |
+| `database/schema-or-migrations/` | Schema and migration reference |
+| `database/seed-data/` | Demo seed data reference |
 
 ## Verification checklist before submission
 
@@ -69,6 +72,9 @@ dotnet user-secrets set "ConnectionStrings:DefaultConnection" "Server=(localdb)\
 - [ ] `dotnet test` — all passed
 - [ ] App starts and login works
 - [ ] All required root markdown files present
-- [ ] `ai-prompts/` folder with phase files
+- [ ] `ai-prompts/` folder with all 7 phase files
+- [ ] `requirements-analysis.md` (exact filename)
+- [ ] `database/schema-or-migrations/` and `database/seed-data/` folders
+- [ ] `tool-specific/cursor-workflow/` folder
 - [ ] `candidate-info.md` filled in
 - [ ] No secrets in committed files

@@ -24,7 +24,11 @@ src/
 tests/
 └── InventoryManagement.Application.Tests/
 database/
-└── setup-notes.md
+├── setup-notes.md
+├── schema-or-migrations/
+└── seed-data/
+tool-specific/
+└── cursor-workflow/
 ```
 
 ## Prerequisites
@@ -95,7 +99,7 @@ See `test-results.md` for recorded output.
 | File | Purpose |
 |------|---------|
 | `candidate-info.md` | Candidate name, email, project metadata |
-| `requirement-analysis.md` | Scope and business context |
+| `requirements-analysis.md` | Scope and business context |
 | `acceptance-criteria.md` | Testable acceptance criteria (AC-01–AC-32) |
 | `implementation-plan.md` | Phased build plan and definition of done |
 
@@ -115,10 +119,12 @@ See `test-results.md` for recorded output.
 | `ai-prompts/implementation.md` | Implementation-phase prompts |
 | `ai-prompts/testing.md` | Testing-phase prompts |
 | `ai-prompts/debugging.md` | Debugging-phase prompts |
-| `ai-prompts/review.md` | Review-phase prompts |
+| `ai-prompts/code-review.md` | Code review-phase prompts |
+| `ai-prompts/documentation.md` | Documentation-phase prompts |
 | `prompt-history.md` | Consolidated prompt log |
 | `final-ai-usage-summary.md` | AI tool usage summary |
 | `tool-workflow.md` | Dev environment and commands |
+| `tool-specific/cursor-workflow/` | Cursor IDE workflow artifacts |
 
 ### Testing and review
 | File | Purpose |
@@ -137,6 +143,8 @@ See `test-results.md` for recorded output.
 | `pr-description.md` | Pull request summary |
 | `reflection.md` | Project reflection |
 | `database/setup-notes.md` | Database setup and verification |
+| `database/schema-or-migrations/` | Schema tables and migration commands |
+| `database/seed-data/` | Demo seed data reference |
 
 ## Security
 
