@@ -49,3 +49,30 @@ POS, purchases, suppliers, payments, HR, user management UI, Chart.js, stock aud
 - Single company per deployment for demo (CompanyId = 1 for all seeded data)
 - INR-style tax calculation: line discount then GST on discounted amount
 - QuestPDF Community license acceptable for academic/demo use
+
+## Edge cases
+
+| Scenario | Expected behavior | Implementation |
+|----------|-------------------|----------------|
+| Login with wrong password | Error message on login form | `AccountController` ModelState error |
+| Login without CompanyId claim | Empty product/customer lists | `RefreshClaimsAsync` adds claim on login |
+| Duplicate product SKU | Validation error, no save | `ProductService` uniqueness check |
+| Quotation with zero quantity | Rejected server-side, not saved | `QuotationService.ValidateCreate` |
+| Quotation with missing customer | Rejected with field error | `CustomerId` validation |
+| Valid-until before quotation date | Rejected with field error | Date comparison in service |
+| Line discount 100% | Line subtotal and tax = 0 | `QuotationCalculator` unit tested |
+| Quotation-level discount | Subtracted from document total after line taxes | `QuotationCalculator.Calculate` |
+| Global search with 1 character | Validation message, no results | `SearchController` min 2 chars |
+| Settings color change | UI accent + next PDF reflect new color | `ThemeColorsViewComponent` + `QuotationPdfGenerator` |
+| PDF for non-existent quotation | Redirect with error | `QuotationsController.DownloadPdf` |
+| Restart app after creating data | Data persists in SQL Server | EF Core migrations + seed |
+
+## Open questions (resolved for demo)
+
+| Question | Decision |
+|----------|----------|
+| Multi-company per deployment? | Deferred — single CompanyId = 1 for demo |
+| Stock decrement on quotation? | Out of scope — stock is informational only |
+| Async PDF generation? | Deferred — synchronous for demo volume |
+| GST inclusive vs exclusive pricing? | Exclusive — GST added on discounted line amount |
+| Integration tests required? | Added — `WebApplicationFactory` for login and quotation create |

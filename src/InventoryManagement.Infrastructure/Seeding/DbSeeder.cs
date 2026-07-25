@@ -24,7 +24,14 @@ public static class DbSeeder
         var logger = provider.GetRequiredService<ILoggerFactory>().CreateLogger("DbSeeder");
 
         var context = provider.GetRequiredService<ApplicationDbContext>();
-        await context.Database.MigrateAsync();
+        if (context.Database.IsRelational())
+        {
+            await context.Database.MigrateAsync();
+        }
+        else
+        {
+            await context.Database.EnsureCreatedAsync();
+        }
 
         if (await context.Companies.AnyAsync())
         {

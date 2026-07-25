@@ -41,6 +41,40 @@ Settings form → CompanySettingsService → DB
 Quotation PDF request → QuotationPdfGenerator → reads Company + CompanySetting → byte[]
 ```
 
+**End-to-end sequence (settings → PDF):**
+
+```mermaid
+sequenceDiagram
+    actor User
+    participant SettingsUI as Settings/Index.cshtml
+    participant SettingsCtrl as SettingsController
+    participant SettingsSvc as CompanySettingsService
+    participant DB as SQL Server
+    participant QuoteCtrl as QuotationsController
+    participant QuoteSvc as QuotationService
+    participant PdfGen as QuotationPdfGenerator
+
+    User->>SettingsUI: Update company name, color, terms
+    SettingsUI->>SettingsCtrl: POST /Settings
+    SettingsCtrl->>SettingsSvc: UpdateSettingsAsync(dto)
+    SettingsSvc->>DB: UPDATE Companies, CompanySettings
+    DB-->>SettingsSvc: OK
+    SettingsSvc-->>SettingsCtrl: ServiceResult OK
+    SettingsCtrl-->>User: Redirect with success
+
+    User->>QuoteCtrl: GET /Quotations/DownloadPdf/{id}
+    QuoteCtrl->>QuoteSvc: GetPdfContextAsync(id)
+    QuoteSvc->>DB: Load quotation + lines
+    QuoteSvc->>SettingsSvc: GetSettingsAsync()
+    SettingsSvc->>DB: Load company profile + settings keys
+    DB-->>QuoteSvc: Quotation + settings DTOs
+    QuoteSvc-->>QuoteCtrl: QuotationPdfContextDto
+    QuoteCtrl->>PdfGen: Generate(context)
+    Note over PdfGen: Uses settings.PrimaryColor,<br/>Profile.Name, InvoiceTerms, InvoiceFooter
+    PdfGen-->>QuoteCtrl: byte[] PDF
+    QuoteCtrl-->>User: application/pdf download
+```
+
 ## Quotation calculation design
 
 **Decision:** Pure static `QuotationCalculator` in Application layer.

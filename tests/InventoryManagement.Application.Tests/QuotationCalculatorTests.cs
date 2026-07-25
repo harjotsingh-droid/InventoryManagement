@@ -34,4 +34,29 @@ public class QuotationCalculatorTests
         Assert.Equal(21.60m, line.TaxAmount);
         Assert.Equal(141.60m, line.TotalAmount);
     }
+
+    [Fact]
+    public void CalculateLine_WithFullDiscount_HasZeroTax()
+    {
+        var line = QuotationCalculator.CalculateLine(quantity: 5m, unitPrice: 100m, discountPercent: 100m, gstPercent: 18m);
+
+        Assert.Equal(0m, line.LineSubTotal);
+        Assert.Equal(0m, line.TaxAmount);
+        Assert.Equal(0m, line.TotalAmount);
+    }
+
+    [Fact]
+    public void Calculate_WithQuotationDiscount_SubtractsFromDocumentTotal()
+    {
+        var lines = new List<(decimal Quantity, decimal UnitPrice, decimal DiscountPercent, decimal GstPercent)>
+        {
+            (1m, 200m, 0m, 18m)
+        };
+
+        var result = QuotationCalculator.Calculate(lines, quotationDiscountAmount: 50m);
+
+        Assert.Equal(200m, result.SubTotal);
+        Assert.Equal(36m, result.TaxAmount);
+        Assert.Equal(186m, result.TotalAmount);
+    }
 }

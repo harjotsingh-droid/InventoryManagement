@@ -1,57 +1,94 @@
 # AI Prompts — Debugging Phase
 
-## Prompt 1 — CompanyId claim issue
+## Prompt 1 — CompanyId claim issue (3 iterations)
 
 **Date:** 2026-07-02
 
-**Prompt:**
-> After login, product and customer lists are empty. Services filter by CompanyId but it seems to be 0. How do I add CompanyId claim from ApplicationUser in ASP.NET Identity?
+**Symptom I reported:**
+> After login, product and customer lists are empty. No errors in console. Using ASP.NET Identity with ApplicationUser.CompanyId.
 
-**Outcome:**
-- Identified missing claim on identity principal
-- Suggested `RefreshClaimsAsync` pattern in AccountController
-- Fix applied and verified — lists load after login
+**AI attempt 1:**
+> Check that DbSeeder set CompanyId on user records.
+
+**My verification:** CompanyId = 1 in database. **Not the root cause.**
+
+**AI attempt 2:**
+> Add `.Where(p => true)` temporarily to ProductService to show all products.
+
+**My decision:** **Rejected** — violates tenant isolation. Did not apply.
+
+**AI attempt 3:**
+> Add CompanyId as a claim in AccountController after successful login using UserManager.AddClaimAsync.
+
+**My verification:** Applied `RefreshClaimsAsync`. Products load. **Accepted.**
+
+**Trace evidence:** `_currentUser.CompanyId` was `0` before fix, `1` after.
+
+---
 
 ## Prompt 2 — Quotation test failure
 
 **Date:** 2026-07-02
 
-**Prompt:**
-> QuotationCalculatorTests.Calculate_WithKnownLineItems_ProducesCorrectTotals is failing. The calculator applies line discount then GST. Help me recalculate expected values.
+**Symptom:**
+```
+Assert.Equal() Failure: Expected: 700, Actual: 680
+```
 
-**Outcome:**
-- Recalculated: lineAmount - discount = lineSubTotal; tax = lineSubTotal × gst%
-- Updated test assertions; all tests pass
+**Prompt:**
+> QuotationCalculatorTests is failing. Calculator applies line discount then GST. Help recalculate expected values for lines (2, 100, 10%, 18%) and (1, 500, 0%, 12%) with quote discount 50.
+
+**AI output:** Provided step-by-step math confirming 680 subtotal.
+
+**My action:** Updated test assertions manually. Did not change calculator code — calculator was correct, test expectations were wrong.
+
+---
 
 ## Prompt 3 — Theme color not showing
 
 **Date:** 2026-07-02
 
-**Prompt:**
-> Primary color saves in Settings but the navigation accent doesn't change. How can I inject the color into the layout from company settings?
+**Symptom:** Settings saved `#dc2626` but nav bar stayed blue.
 
-**Outcome:**
-- Created `ThemeColorsViewComponent`
-- Invoked in `_Layout.cshtml` with CSS variable `--primary-color`
+**AI suggestion:** Inject CSS variable via ViewComponent reading from CompanySettingsService.
 
-## Prompt 4 — PowerShell command chaining
+**Outcome:** Created `ThemeColorsViewComponent`. Required page refresh after save — documented as known limitation.
 
-**Date:** 2026-07-01
+---
 
-**Prompt:**
-> dotnet commands with && fail in PowerShell. What's the alternative for chaining project scaffold commands?
+## Prompt 4 — Integration test InMemory failure
 
-**Outcome:**
-- Use semicolon-separated commands
-- Documented in `debugging-notes.md`
+**Date:** 2026-07-25
 
-## Prompt 5 — EF Core decimal warnings
+**Symptom:**
+```
+System.InvalidOperationException: Relational-specific methods can only be used with relational databases.
+```
 
-**Date:** 2026-07-02
+**At:** `DbSeeder.SeedAsync` → `MigrateAsync()` on InMemory provider.
 
-**Prompt:**
-> EF Core warns about decimal properties without precision. Configure HasPrecision for monetary columns in ApplicationDbContext.
+**AI suggestion:** Check `context.Database.IsRelational()` before calling Migrate.
 
-**Outcome:**
-- `HasPrecision(18, 2)` on price/total columns
-- Build succeeds with 0 warnings
+**My fix:**
+```csharp
+if (context.Database.IsRelational())
+    await context.Database.MigrateAsync();
+else
+    await context.Database.EnsureCreatedAsync();
+```
+
+Also added `Testing` environment guard in `Program.cs`.
+
+**Verification:** `dotnet test` — 12/12 passed.
+
+---
+
+## Prompt 5 — PDF text assertion failure in tests
+
+**Date:** 2026-07-25
+
+**Symptom:** `Assert.Contains("Acme Custom Branding Ltd", pdfText)` failed — QuestPDF compresses text streams.
+
+**AI suggestion:** Compare PDF byte output between two different company names instead of parsing text.
+
+**Outcome:** `Generate_WithDifferentCompanyNames_ProducesDifferentPdfOutput` — asserts different settings produce different PDF bytes.

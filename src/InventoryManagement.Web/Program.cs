@@ -35,6 +35,11 @@ app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}");
 
-await DbSeeder.SeedAsync(app.Services);
+if (!app.Environment.IsEnvironment("Testing"))
+{
+    await DbSeeder.SeedAsync(app.Services);
+}
 
 app.Run();
+
+public partial class Program;

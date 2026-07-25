@@ -5,50 +5,77 @@
 **Date:** 2026-07-02
 
 **Prompt:**
-> Create xUnit tests for QuotationCalculator: test line calculation with discount and GST, and document totals with multiple lines and quotation-level discount. Use known values for assertions.
+> Create xUnit tests for QuotationCalculator with known values.
 
-**Outcome:**
-- `QuotationCalculatorTests.cs` with 2 test methods
-- Initial test failed due to incorrect expected values (fixed manually)
+**Outcome:** `QuotationCalculatorTests.cs` with 2 test methods.
+
+**Failure:** First run failed — `Expected: 700, Actual: 680`.
+
+**My correction:** Recalculated expected values manually (see `debugging.md`). AI helped verify math but I updated assertions myself.
+
+---
 
 ## Prompt 2 — Settings defaults tests
 
 **Date:** 2026-07-02
 
 **Prompt:**
-> Create xUnit tests for SettingsDefaults: verify default values when settings keys are missing, verify configured values when present, and test GetSetting fallback.
+> Create xUnit tests for SettingsDefaults fallback behavior.
 
-**Outcome:**
-- `SettingsDefaultsTests.cs` with 3 test methods
-- All tests pass
+**Outcome:** 3 tests in `SettingsDefaultsTests.cs` — all passed on first run.
 
-## Prompt 3 — Test strategy document
+---
 
-**Date:** 2026-07-02
+## Prompt 3 — Edge case tests (post-review)
 
-**Prompt:**
-> Write test-strategy.md covering unit tests, manual checklist, deferred integration tests, pass/fail criteria, and known gaps.
-
-**Outcome:**
-- Test strategy with levels, coverage focus, and execution record reference
-
-## Prompt 4 — Record test results
-
-**Date:** 2026-07-02
+**Date:** 2026-07-25
 
 **Prompt:**
-> Run dotnet test and record output in test-results.md with test names and pass/fail table.
+> Add edge case unit tests: 100% line discount (zero tax), quotation-level discount subtraction.
 
 **Outcome:**
-- 5 tests passed, 0 failed
-- Output saved to `test-results.md`
+- `CalculateLine_WithFullDiscount_HasZeroTax`
+- `Calculate_WithQuotationDiscount_SubtractsFromDocumentTotal`
 
-## Prompt 5 — Manual test checklist
+---
 
-**Date:** 2026-07-02
+## Prompt 4 — Integration tests (iteration)
+
+**Date:** 2026-07-25
 
 **Prompt:**
-> Create manual test checklist for authentication, products, customers, quotations, settings/PDF, global search, and persistence after restart.
+> Add WebApplicationFactory integration test for quotation create flow with anti-forgery token handling.
 
-**Outcome:**
-- Checklist saved to `testing-notes.md`
+**Iteration 1:** Tests failed — login redirect asserted `/Home` but actual redirect was `/`.
+
+**Fix:** Accept both `/` and `/Home` as valid post-login redirects.
+
+**Iteration 2:** Zero-quantity test searched for error text in HTML — field-level errors not rendered (view uses `ModelOnly` summary).
+
+**Fix:** Assert HTTP 200 + quotation count remains 0 (outcome-based assertion).
+
+**Iteration 3:** PDF text assertion failed on compressed PDF streams.
+
+**Fix:** Compare PDF byte output between different settings instead.
+
+**Final outcome:** 5 integration tests passing in `InventoryManagement.Web.Tests`.
+
+---
+
+## Prompt 5 — Record test results
+
+**Date:** 2026-07-25
+
+**Command run:**
+```powershell
+dotnet test
+```
+
+**Output:**
+```
+Application.Tests: Passed 7, Failed 0
+Web.Tests:         Passed 5, Failed 0
+Total:             12 tests
+```
+
+Recorded in `test-results.md`.

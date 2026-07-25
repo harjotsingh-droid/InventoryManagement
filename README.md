@@ -22,7 +22,8 @@ src/
 ├── InventoryManagement.Shared/       # Setting keys, theme helpers
 └── InventoryManagement.Web/          # MVC controllers & Razor views
 tests/
-└── InventoryManagement.Application.Tests/
+├── InventoryManagement.Application.Tests/  # Unit tests (7)
+└── InventoryManagement.Web.Tests/        # Integration tests (5)
 database/
 ├── setup-notes.md
 ├── schema-or-migrations/
@@ -142,6 +143,7 @@ See `test-results.md` for recorded output.
 |------|---------|
 | `pr-description.md` | Pull request summary |
 | `reflection.md` | Project reflection |
+| `demo-walkthrough.md` | Step-by-step demo with test evidence |
 | `database/setup-notes.md` | Database setup and verification |
 | `database/schema-or-migrations/` | Schema tables and migration commands |
 | `database/seed-data/` | Demo seed data reference |

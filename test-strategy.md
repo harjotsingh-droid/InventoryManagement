@@ -26,6 +26,18 @@ dotnet test
 
 **Coverage focus:** Business rules that would be expensive to verify manually and prone to regression.
 
+### Integration tests (automated)
+
+**Framework:** xUnit + `WebApplicationFactory`
+**Location:** `tests/InventoryManagement.Web.Tests/`
+
+| Test class | What it validates |
+|------------|-------------------|
+| `QuotationsIntegrationTests` | Login flow, quotation create POST, zero-quantity rejection |
+| `QuotationPdfGeneratorTests` | PDF output varies with settings; valid PDF document structure |
+
+Uses InMemory database via `CustomWebApplicationFactory` with `Testing` environment.
+
 ### Manual tests (checklist)
 
 **Location:** `testing-notes.md`
@@ -56,8 +68,8 @@ Not in trimmed core scope. Recommended follow-up:
 
 - No automated UI tests (Selenium/Playwright)
 - No service-layer tests with mocked `DbContext`
-- No PDF content assertion tests
+- PDF content not parsed for exact text (compares byte output instead)
 
 ## Test execution record
 
-See `test-results.md` for captured `dotnet test` output (5 tests passed, 2026-07-02).
+See `test-results.md` for captured `dotnet test` output (12 tests passed, 2026-07-25).
