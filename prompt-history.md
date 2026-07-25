@@ -2,6 +2,9 @@
 
 This file records the primary AI prompts used to build the SME ERP Inventory Management project.
 
+> **Phase-specific prompts** are also available in `ai-prompts/`:
+> `planning.md`, `design.md`, `implementation.md`, `testing.md`, `debugging.md`, `review.md`
+
 ## Session 1 — Project bootstrap
 
 **Prompt:** Create full project based on Option 3 specification (.NET Full-Stack SME ERP — Inventory Management) including Clean Architecture, authentication, products, customers, quotations with PDF, settings-driven branding, global search, dashboard KPIs, EF Core migrations/seed, xUnit tests, and lifecycle documentation.

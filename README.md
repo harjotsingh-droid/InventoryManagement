@@ -91,14 +91,51 @@ See `test-results.md` for recorded output.
 
 ## Lifecycle artifacts
 
+### Planning
 | File | Purpose |
 |------|---------|
-| `prompt-history.md` | AI prompt history for the project |
-| `requirement-analysis.md` | Scope and acceptance mapping |
+| `candidate-info.md` | Candidate name, email, project metadata |
+| `requirement-analysis.md` | Scope and business context |
+| `acceptance-criteria.md` | Testable acceptance criteria (AC-01–AC-32) |
+| `implementation-plan.md` | Phased build plan and definition of done |
+
+### Design
+| File | Purpose |
+|------|---------|
+| `api-contract.md` | MVC routes and service contracts |
+| `data-model.md` | Entities, relationships, calculation rules |
+| `ui-flow.md` | User journeys and navigation |
+| `design-notes.md` | Architecture decisions and trade-offs |
+
+### AI workflow
+| File / Folder | Purpose |
+|---------------|---------|
+| `ai-prompts/planning.md` | Planning-phase prompts |
+| `ai-prompts/design.md` | Design-phase prompts |
+| `ai-prompts/implementation.md` | Implementation-phase prompts |
+| `ai-prompts/testing.md` | Testing-phase prompts |
+| `ai-prompts/debugging.md` | Debugging-phase prompts |
+| `ai-prompts/review.md` | Review-phase prompts |
+| `prompt-history.md` | Consolidated prompt log |
+| `final-ai-usage-summary.md` | AI tool usage summary |
+| `tool-workflow.md` | Dev environment and commands |
+
+### Testing and review
+| File | Purpose |
+|------|---------|
+| `test-strategy.md` | Unit/manual test approach |
+| `test-results.md` | `dotnet test` output |
 | `testing-notes.md` | Manual test checklist |
 | `debugging-notes.md` | Issues encountered and fixes |
-| `code-review-reflection.md` | Self-review and improvements |
-| `test-results.md` | `dotnet test` output |
+| `code-review-notes.md` | Review findings |
+| `review-fixes.md` | Bugs fixed after review |
+| `code-review-reflection.md` | Earlier self-review notes |
+
+### Documentation and ownership
+| File | Purpose |
+|------|---------|
+| `pr-description.md` | Pull request summary |
+| `reflection.md` | Project reflection |
 | `database/setup-notes.md` | Database setup and verification |
 
 ## Security
